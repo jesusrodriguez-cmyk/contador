@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Feliz mes mi amor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <style>
         * {
             margin: 0;
@@ -161,7 +161,6 @@
                 opacity: 1;
             }
         }
-
     </style>
 </head>
 <body>
@@ -199,7 +198,7 @@
             <!-- Video desde tu archivo local -->
             <div class="video">
                 <video controls autoplay loop>
-                    <source src="video_tuyo.mp4" type="video/mp4">
+                    <source src="video_tuyo.mp4" type="video/mp4" />
                     Tu navegador no soporta este video.
                 </video>
             </div>
@@ -207,23 +206,25 @@
             <!-- Texto al lado del video -->
             <div class="video-text">
                 <h2>Feliz tercer mes </h2>
-                <p>Conocerte pudo ser cuestión de suerte o coincidencia, pero prefiero interpretarlo como un regalo de la vida... Rogue mucho tiempo tener una mujer como tu en mi vida, no sabes lo agradecido que estoy con Dios por traerte a mi vida. 
-                    Te amo mucho "mi oración escuchada"</p>
+                <p>
+                    Conocerte pudo ser cuestión de suerte o coincidencia, pero prefiero interpretarlo como un regalo de la vida... Rogue mucho tiempo tener una mujer como tu en mi vida, no sabes lo agradecido que estoy con Dios por traerte a mi vida.
+                    Te amo mucho "mi oración escuchada"
+                </p>
             </div>
         </div>
 
         <!-- Música de fondo (inicialmente oculta) -->
-        <audio id="music" autoplay loop>
-            <source src="musica.mp3" type="audio/mp3">
+        <audio id="music" loop>
+            <source src="musica.mp3" type="audio/mp3" />
             Tu navegador no soporta audio.
         </audio>
     </div>
 
     <script>
         // Configuración de la fecha de la cuenta regresiva
-        const fechaObjetivo = new Date("2025-09-14T00:00:00").getTime(); // Cambia la fecha de tu evento
+        const fechaObjetivo = new Date("2025-09-13T23:25:00").getTime(); // Cambia la fecha de tu evento
 
-        const cuentaRegresiva = setInterval(function() {
+        const cuentaRegresiva = setInterval(function () {
             let ahora = new Date().getTime();
             let distancia = fechaObjetivo - ahora;
 
@@ -234,20 +235,46 @@
             let segundos = Math.floor((distancia % (1000 * 60)) / 1000);
 
             // Mostrando los valores en el HTML
-            document.getElementById("dias").children[0].textContent = dias;
-            document.getElementById("horas").children[0].textContent = horas;
-            document.getElementById("minutos").children[0].textContent = minutos;
-            document.getElementById("segundos").children[0].textContent = segundos;
+            document.getElementById("dias").children[0].textContent = dias < 10 ? "0" + dias : dias;
+            document.getElementById("horas").children[0].textContent = horas < 10 ? "0" + horas : horas;
+            document.getElementById("minutos").children[0].textContent = minutos < 10 ? "0" + minutos : minutos;
+            document.getElementById("segundos").children[0].textContent = segundos < 10 ? "0" + segundos : segundos;
 
             // Cuando la cuenta regresiva termine
             if (distancia < 0) {
                 clearInterval(cuentaRegresiva);
-                document.getElementById("contador").style.display = "none";  // Ocultar el contador
-                document.getElementById("sorpresa").style.display = "block";  // Mostrar la sorpresa
-                document.getElementById("music").play();  // Reproducir la música
+                document.getElementById("contador").style.display = "none"; // Ocultar el contador
+                document.getElementById("sorpresa").style.display = "block"; // Mostrar la sorpresa
+
+                // Reiniciar la música al inicio y reproducir
+                const music = document.getElementById("music");
+                music.currentTime = 0;
+                intentarReproducirMusica();
             }
         }, 1000);
-    </script>
 
+        // Función para intentar reproducir la música
+        const music = document.getElementById("music");
+
+        function intentarReproducirMusica() {
+            music.play().then(() => {
+                console.log("Música reproduciéndose");
+            }).catch((err) => {
+                console.log("Autoplay bloqueado, esperando interacción del usuario", err);
+            });
+        }
+
+        // Intentar reproducir la música al cargar la página
+        document.addEventListener("DOMContentLoaded", intentarReproducirMusica);
+
+        // Si fue bloqueado, reproducir en el primer clic/tap
+        document.addEventListener(
+            "click",
+            () => {
+                intentarReproducirMusica();
+            },
+            { once: true }
+        );
+    </script>
 </body>
 </html>
